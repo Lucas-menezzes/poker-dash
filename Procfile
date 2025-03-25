@@ -1,1 +1,1 @@
-web: bash entrypoint.sh
+web: gunicorn poker_dashboard.wsgi
