@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <label for="logo-upload">
+                <img id="logo" src="{% static 'images/pokerlogo.png' %}" alt="Poker do Tião" class="logo">
+            </label>
+            <input type="file" id="logo-upload" style="display: none;" onchange="changeLogo(event)">
+        </div>      
+        <div class="header-btn">
+            {% if user.is_authenticated %}
+                <span>Bem-vindo, {{ user.username }}</span>
+                <form action="{% url 'logout' %}"  method="POST" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Sair</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-primary">Entrar</a>
+            {% endif %}
+            <div>
+                <a href="{% url 'dashboard' %}" class="btn btn-primary">Dashboard</a>
+            </div>
+            <div>
+                <a href="{% url 'historic' %}" class="btn btn-primary">Histórico</a>
+            </div>
+        </div>      
+
+    </header>
+    {% block content %}{% endblock %}
+    <script>
+        function changeLogo(event) {
+            const logo = document.getElementById('logo');
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    logo.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>

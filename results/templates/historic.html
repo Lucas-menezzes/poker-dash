@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Historic Page{% endblock %}
+
+{% block content %}
+<div class="container" >
+    <h2>Histórico de Jogos</h2>
+</div>
+
+<div class="table-container">   
+    {% if games %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Data de Início</th>
+                <th>Data de Término</th>
+                <th>Status</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in game_data %}
+            <tr>
+                <td>{{ item.game.id }}</td>
+                <td>{{ item.game.start_time|date:"d/m/Y H:i:s" }}</td>
+                <td>{{ item.game.end_time|date:"d/m/Y H:i:s" }}</td>
+                <td>{{ item.game.active|yesno:"Ativo,Finalizado" }}</td>
+                <td>R$ {{ item.total_compras|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>Não há jogos registrados no histórico.</p>
+    {% endif %}
+</div>
+
+{% endblock%}

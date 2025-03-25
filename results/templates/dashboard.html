@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+{% if user.is_authenticated %}
+    <div class="game-info">
+        <button onclick="startGame()" class="btn-game"></button>
+    </div>
+{% endif %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Saldo</th>
+                    <th>Compras</th>
+                    <th>Créditos</th>
+                    <th>Débitos</th>
+                    <th>Presenças</th>
+                    <th>Valor/Dia</th>
+                    <th>Frequência</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in players %}
+                <tr>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.balance|floatformat:2 }}</td>
+                    <td>{{ player.purchases }}</td>
+                    <td>{{ player.credits|floatformat:2 }}</td>
+                    <td>{{ player.debits|floatformat:2 }}</td>
+                    <td>{{ player.attendance }}</td>
+                    <td>{{ player.value_per_day|floatformat:2 }}</td>
+                    <td>{{ player.frequency |floatformat:2}}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function startGame() {
+            fetch('/start_game/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    console.log("Jogo iniciado com sucesso!");
+                    console.log("Jogo iniciado com sucesso! ID do jogo:", data.game_id);
+                    window.location.href = '/games/';
+                } else {
+                    alert('Erro ao iniciar o jogo: ' + data.message);
+                }
+            });
+        }
+    </script>
+{% endblock %}
