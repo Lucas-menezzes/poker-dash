@@ -58,13 +58,15 @@ AUTH_USER_MODEL = 'results.Player'
 
 
 # Database
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-if os.getenv("RAILWAY_ENVIRONMENT"):
+if DATABASE_URL:
+    print(f"Usando DATABASE_URL: {DATABASE_URL}")
     DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600)
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
     }
 else:
-    # Configuração local
+    print("Usando configuração local")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -76,8 +78,6 @@ else:
         }
     }
 
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
