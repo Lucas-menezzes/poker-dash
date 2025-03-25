@@ -11,7 +11,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", 'SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
-
+CSRF_TRUSTED_ORIGINS = ['https://poker-dash.onrender.com']
 LOGIN_URL = '/login/'
 
 INSTALLED_APPS = [
