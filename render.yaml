@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: poker-dash
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: |
+      python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      gunicorn poker_dashboard.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://poker_db_9t2a_user:AfrE7Yuy6RWfRbWr0GchzSNJikPLQ54u@dpg-cvhjq98gph6c73ccjm10-a/poker_db_9t2a
